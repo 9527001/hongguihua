@@ -1,0 +1,54 @@
+//
+//  XYSenderModel.h
+//  XYFrameWork
+//
+//  Created by 中企互联 on 16/6/20.
+//  Copyright © 2016年 xiaoyao. All rights reserved.
+//
+
+#import "XYBaseModel.h"
+
+@interface XYSenderModel : XYBaseModel
+/**
+ *  
+ pid	商品id
+ gid	等级id
+ sendtoplace	目的地
+ sendtime	发货月份
+ carnumber	车牌号
+ 
+ spec	规格
+ unit	件数
+ maxCount 最大发货量
+ price	价格
+ otherprice	其他费用
+ photos	图片
+ 
+ provinceId	省份id
+ cityid	城市id
+ districtId	区县id
+ 
+ driverphone 司机电话
+ placeofreceipt 发货地
+ */
+
+@property (nonatomic,copy) NSString <Optional>* pid;
+@property (nonatomic,copy) NSString <Optional>* pname;
+@property (nonatomic,copy) NSString <Optional>* sendtoplace;
+@property (nonatomic,copy) NSString <Optional>* driverphone;
+@property (nonatomic,copy) NSString <Optional>* placeofreceipt;
+@property (nonatomic,copy) NSString <Optional>* provinceId;
+@property (nonatomic,copy) NSString <Optional>* cityid;
+@property (nonatomic,copy) NSString <Optional>* districtId;
+@property (nonatomic,copy) NSString <Optional>* sendtime;
+@property (nonatomic,copy) NSString <Optional>* carnumber;
+@property (nonatomic,copy) NSString <Optional>* gid;
+@property (nonatomic,copy) NSString <Optional>* gname;
+@property (nonatomic,copy) NSString <Optional>* spec;
+@property (nonatomic,copy) NSString <Optional>* unit;
+@property (nonatomic,copy) NSString <Optional>* maxCount;
+@property (nonatomic,copy) NSString <Optional>* price;
+@property (nonatomic,copy) NSString <Optional>* otherprice;
+@property (nonatomic,strong) NSMutableArray <Optional>* photos;
+
+@end

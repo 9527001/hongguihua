@@ -1,0 +1,250 @@
+//
+//  XYSubmitAnExpenseAccountViewController.m
+//  XYFrameWork
+//
+//  Created by 中企互联 on 16/6/8.
+//  Copyright © 2016年 xiaoyao. All rights reserved.
+//
+
+#import "XYSubmitAnExpenseAccountViewController.h"
+
+#import "XYTextFieldDetailCell.h"
+#import "XYTextFieldCell.h"
+#import "XYSubmitCell.h"
+#import "XYPhotosCell.h"
+
+#import "XYPhotoBrowser.h"
+
+#define MAXCOUNT 5
+@interface XYSubmitAnExpenseAccountViewController ()
+
+@property (nonatomic,strong) NSArray * titleArr;
+@property (nonatomic,strong) NSArray * placeHolderArr;
+@property (nonatomic,strong) NSMutableArray * dataArr;
+@property (nonatomic,strong) NSMutableArray * imagesArr;
+@property (nonatomic,strong) NSArray * notesArr;
+
+@end
+
+@implementation XYSubmitAnExpenseAccountViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)initNavigationBar {
+    [super initNavigationBar]; 
+    self.titleArr = @[@"报销金额（元）",@"报销类别",@"费用明细"];
+    self.placeHolderArr = @[@"请输入数字（必填）",@"如：采购经费，活动经费（必填）",@"请输入费用明细的描述（必填）"];
+    self.notesArr = @[@"请输入报销金额",@"请输入报销类别",@"请输入费用明细"];
+    
+}
+- (void)initData {
+    [super initData];
+    self.dataArr = [NSMutableArray arrayWithArray:@[@"",@"",@""]];
+    _imagesArr = [NSMutableArray array];
+}
+
+- (void)initTableView {
+    [super initTableView];
+    [self initTableViewWithDelegate:self dataSource:self frame:self.view.bounds];
+    [self.mTableView registerNib:@"XYTextFieldDetailCell"];
+    [self.mTableView registerNib:@"XYTextFieldCell"];
+    [self.mTableView registerNib:@"XYSubmitCell"];
+    [self.mTableView registerNib:@"XYPhotosCell"];
+    [self.mTableView.tableFooterView setBackgroundColor:[UIColor clearColor]];
+}
+
+#pragma mark -- tableView Delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 4 + 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 3) {
+        return 2;
+    }
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 2) {
+        return 80.f;
+    }
+    if (indexPath.section == 4) {
+        return 50.f;
+    }
+    if (indexPath == [NSIndexPath indexPathForRow:1 inSection:3]) {
+        return [XYPhotosCell cellHeight];
+    }
+    return H_TABLECELLDEFAULTHEIGHT;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == 2) {
+        return 20.f;
+    }
+    return 0.1f;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.1f;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    XYTextFieldCell *cell_tf = [tableView dequeueReusableCellWithIdentifier:@"XYTextFieldCell"];
+    XYTextFieldDetailCell *cell_tfd = [tableView dequeueReusableCellWithIdentifier:@"XYTextFieldDetailCell"];
+    XYSubmitCell *SubmitCell = [tableView dequeueReusableCellWithIdentifier:@"XYSubmitCell"];
+    XYPhotosCell *cell_photo = [tableView dequeueReusableCellWithIdentifier:@"XYPhotosCell"];
+
+    XYWeakSelf
+    
+    if (self.dataArr.count) {
+        [cell_tf setModel:[self.dataArr safeObjectAtIndex:indexPath.section] IndexPath:indexPath callBack:^(NSString* x, NSIndexPath * indexPath) {
+            [weakSelf.dataArr replaceObjectAtIndex:indexPath.section withObject:x];
+        }];
+        
+        [cell_tfd setModel:[self.dataArr safeObjectAtIndex:indexPath.section] IndexPath:indexPath callBack:^(NSString* x, NSIndexPath * indexPath) {
+            [weakSelf.dataArr replaceObjectAtIndex:indexPath.section withObject:x];
+        }];
+    
+    }
+    if (self.titleArr.count && self.placeHolderArr.count) {
+        [cell_tf.leftLabel setText:[self.titleArr safeObjectAtIndex:indexPath.section]];
+        [cell_tf.rightTextField setPlaceholder:[self.placeHolderArr safeObjectAtIndex:indexPath.section]];
+        [cell_tfd.leftLabel setText:[self.titleArr safeObjectAtIndex:indexPath.section]];
+        [cell_tfd.rightLabel setText:[self.placeHolderArr safeObjectAtIndex:indexPath.section]];
+    }
+    
+    switch (indexPath.section) {
+        case 0:
+        {
+            [cell_tf showtopline:NO bottomline:YES jiantou:NO];
+            cell_tf.tfType = demical;
+            cell_tf.rightTextField.keyboardType = UIKeyboardTypeDecimalPad;
+            return cell_tf;
+        }
+            break;
+        case 1:
+        {
+            [cell_tf showtopline:NO bottomline:YES jiantou:YES];
+            return cell_tf;
+        }
+            break;
+        case 2:
+        {
+            [cell_tfd showtopline:NO bottomline:YES];
+            return cell_tfd;
+        }
+            break;
+        case 3:
+        {
+            if (indexPath.row == 0) {
+                [cell_tf showtopline:YES bottomline:YES jiantou:YES];
+                [cell_tf.leftLabel setText:@"报销图片"];
+                return cell_tf;
+            }else{
+                
+                    NSArray * imageArr = _imagesArr;
+                
+                    [cell_photo setModel:imageArr IndexPath:indexPath callBack:^(NSMutableArray * arr, NSIndexPath *indexPath) {
+                        [XYPhotoBrowser showPhotoBrowserWithTarget:weakSelf andMaxImageCount:(MAXCOUNT - arr.count) type:PhotoBrowserMultiple callBack:^(id x) {
+                            if ([x isKindOfClass:[NSArray class]]) {
+                                for (UIImage * image in x) {
+                                    [weakSelf.imagesArr addObject:image];
+                                }
+                                [weakSelf.mTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                            }
+                        }];
+                    } deleteBlock:^(id x,  NSIndexPath *indexPath) {
+                        [weakSelf.imagesArr removeObjectAtIndex:indexPath.row];
+                    }];
+                    return cell_photo;
+            }
+        }
+                break;
+        default:
+        {
+            [SubmitCell setTitle:@"提交" titleColor:COLOR_WHITE backColor:COLOR_BLUE space:50.f enable:YES];
+            XYWeakSelf
+            SubmitCell.clickCellBtnBlock = ^(UIButton * btn) {
+                [weakSelf submit];
+            };
+            
+            return SubmitCell;
+        }
+            break;
+    }
+}
+//
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    XYWeakSelf
+    if (indexPath.section == 1) {
+        [self.view endEditing:YES];
+        
+        [XYPickerView createPickerViewOnView:SELFVIEW andTitle:@"请选择报销类别" andIndexPath:indexPath andDataArr:@[@[@"电话费",@"办公费",@"养路费",@"培训费",@"差旅费",@"燃料费",@"招待费",@"误餐费",@"零星材料",@"房租",@"水电费",@"运费",@"修理费",@"补贴",@"其它"]] type:PickerTypeDefault XYZBlock:^(NSString * x, NSArray * idsArr, NSIndexPath * indexPath) {
+            [weakSelf.dataArr replaceObjectAtIndex:indexPath.section withObject:x];
+            [weakSelf.mTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }];
+    }
+
+}
+
+#pragma mark -- tool
+- (void)submit {
+    if (self.dataArr.count) {
+        NSInteger i = 0;
+        for (NSString * str in self.dataArr) {
+            if (isNONE(str)) {
+                [DialogUtil showDlgAlert:[self.notesArr safeObjectAtIndex:i]];
+                return;
+            }
+            i ++;
+        }
+        if (i == 3) {
+            [self upload];
+        }
+    }
+  
+}
+- (void)upload {
+    NSString * price = [self.dataArr safeObjectAtIndex:0];
+    NSString *type = [self.dataArr safeObjectAtIndex:1];
+    NSString *content = [self.dataArr safeObjectAtIndex:2];
+    
+    NSDictionary * dic = @{@"token":m_token,
+                           @"price":price,
+                           @"type":type,
+                           @"content":content,
+                           @"photos":@[]};
+    XYWeakSelf
+//    [self xy_postWithValues:dic ModelType:nil Path:i_reimburse hud:nil Success:^(__kindof YTKBaseRequest *request, id model) {
+//        [weakSelf.navigationController popViewControllerAnimated:YES];
+//    } failure:^(NSString *msg, id model) {
+//        
+//    }];
+    [self xy_uploadPhotoWithValues:dic Image:_imagesArr modelType:nil Path:i_reimburse Success:^(__kindof YTKBaseRequest *request, id model) {
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    } failure:^(NSString *msg, id model) {
+        NSLog(@"%@",msg);
+    }];
+}
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

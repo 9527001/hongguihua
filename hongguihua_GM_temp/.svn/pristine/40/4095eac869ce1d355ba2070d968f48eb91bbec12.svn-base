@@ -1,0 +1,349 @@
+//
+//  XYSalesRecordsViewController.m
+//  XYFrameWork
+//
+//  Created by 中企互联 on 16/8/25.
+//  Copyright © 2016年 xiaoyao. All rights reserved.
+//
+
+
+
+#define itemCellWidth 90.f
+#define headerViewHeight 45.f
+#define leftWidth 0.f
+#define cellHeight 50.f
+#define allWidth itemCellWidth * _titleArr.count
+//#define allWidth 100000
+
+
+#import "XYSalesRecordsViewController.h"
+
+#import "XYSalesRecordsTCell.h"
+#import "XYTitleCell.h"
+#import "XYSalesRecordHeadeHFView.h"
+
+#import "XYSaleRecordsModel.h"
+
+#import "XYBuyersViewController.h"
+
+@interface XYSalesRecordsViewController ()<UITableViewDelegate,UITableViewDataSource>
+
+@property (nonatomic,strong) XYTableView * leftTableView;
+@property (nonatomic,strong) XYTableView * contentTableView;
+@property (nonatomic,strong) UIScrollView * scrollView;
+@property (nonatomic,strong) UIScrollView * scrollView_top;
+@property (nonatomic,strong) NSArray * titleArr;
+@property (nonatomic,strong) NSMutableArray * headerViewArr;
+@property (nonatomic,assign) CGFloat count ;
+@property (nonatomic,assign) CGPoint  currentContentOffset;
+
+@end
+
+@implementation XYSalesRecordsViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    [self initFresh];
+    DLog(@"%f ***** %@",_count ++, NSStringFromCGSize(_scrollView.contentSize));
+}
+- (void)initFresh {
+    [super initFresh];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+- (void)initNavigationBar {
+    [super initNavigationBar];
+    self.title = @"销售记录";
+    
+}
+- (void)initUI {
+    [super initUI];
+    _count = 0;
+//    批发地	车次	品项	规格	到货件数	销售日期	销售件数	剩余库存	成本/件	售价/件	累计销售额
+    _titleArr = @[@"批发地",
+                  @"车次",
+                  @"品项",
+                  @"规格",
+                  @"到货件数",
+                  @"销售日期",
+                  @"销售件数",
+                  @"剩余库存",
+                  @"成本/件",
+                  @"售价/件",
+                  @"累计销售额"];
+    [self createLeftTableView];
+    [self createContentTableView];
+}
+
+- (void)initNet {
+    [super initNet];
+    XYWeakSelf
+    [self xy_postWithValues:@{MTOKEN:m_token,MPAGESIZE:m_pagesize,MPAGENUMBER:m_pagenumber} ModelType:[XYSaleRecordsModel class] Path:i_selllist hud:nil Success:^(__kindof YTKBaseRequest *request, id model) {
+        if ([model isKindOfClass:[NSArray class]]) {
+            [weakSelf sucessData:model];
+            [weakSelf handleDataArr:weakSelf.mData];
+        }
+    } failure:^(NSString *msg, id model) {
+        
+    }];
+}
+- (void)handleDataArr:(NSMutableArray *)dataArr{
+    _headerViewArr = [NSMutableArray array];
+    for (NSInteger i = 0; i <dataArr.count ; i ++) {
+        XYSaleRecordsModel * SRModel = [dataArr safeObjectAtIndex:i];
+        HeaderViewModel * model = [[HeaderViewModel alloc]init];
+        model.placeofreceipt = SRModel.placeofreceipt;
+        model.cars = SRModel.cars;
+        model.name = SRModel.name;
+        model.grade = SRModel.grade;
+        model.gunit = SRModel.gunit;
+        
+        Base * bModel = [SRModel.base safeObjectAtIndex:0];
+ 
+        model.addtime = bModel.addtime;
+        model.sunit = bModel.sunit;
+        model.stock = bModel.stock;
+        model.send_price = bModel.send_price;
+        model.price = bModel.price;
+        model.pricesum = bModel.pricesum;
+        [_headerViewArr addObject:model];
+    }
+}
+
+- (void)createLeftTableView {
+    self.leftTableView = [[XYTableView alloc]initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [self.view addSubview:self.leftTableView];
+    [self.leftTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.equalTo(self.view);
+        make.width.mas_equalTo(leftWidth);
+    }];
+    
+    self.leftTableView.bounces = NO;
+    self.leftTableView.showsVerticalScrollIndicator = NO;
+    self.leftTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.leftTableView setBackgroundColor:COLOR_MAIN];
+    self.leftTableView.delegate = self;
+    self.leftTableView.dataSource = self;
+    [self.leftTableView registerNib:@"XYTitleCell"];
+}
+
+- (void)createContentTableView {
+    _scrollView_top = [[UIScrollView alloc] init];
+    [self.view addSubview:_scrollView_top];
+    _scrollView_top.delegate = self;
+    _scrollView_top.bounces = NO;
+    _scrollView_top.alwaysBounceHorizontal = YES;
+    _scrollView_top.alwaysBounceVertical = NO;
+    _scrollView_top.showsHorizontalScrollIndicator = NO;
+    [_scrollView_top mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.equalTo(self.view);
+        make.height.equalTo(@headerViewHeight);
+        
+    }];
+    [self confirgDataArr:_titleArr andBackGroundColor:COLOR_WHITE andItemWidth:itemCellWidth superView:_scrollView_top];
+    
+    
+    _scrollView = [[UIScrollView alloc] init];
+    [self.view addSubview:_scrollView];
+    _scrollView.delegate = self;
+    _scrollView.bounces = NO;
+    _scrollView.alwaysBounceHorizontal = YES;
+    _scrollView.alwaysBounceVertical = NO;
+    [_scrollView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(45.f);
+        make.bottom.right.equalTo(self.view);
+        make.left.equalTo(@(leftWidth));
+    }];
+    
+    self.contentTableView = [[XYTableView alloc]init];
+    self.contentTableView.delegate = self;
+    self.contentTableView.dataSource = self;
+    [_scrollView addSubview:self.contentTableView];
+    NSInteger count = 0 ;
+    if (XY_DEVICE_isPortrait) {
+        count = XY_M_SCREEN_H - 64 - headerViewHeight;
+    }else{
+        count = XY_M_SCREEN_W - 64 - headerViewHeight;
+    }
+    [self.contentTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_scrollView.mas_top);
+        make.left.equalTo(_scrollView.mas_left);
+        make.bottom.equalTo(_scrollView.mas_bottom);
+        make.right.equalTo(_scrollView.mas_right);
+        make.height.equalTo(@(count));
+        make.width.equalTo(@(allWidth));
+    }];
+    self.contentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self.contentTableView registerNib:@"XYSalesRecordsTCell"];
+    [self.contentTableView registerClassHeaderFooterView:@"XYSalesRecordHeadeHFView"];
+    self.mTableView = self.contentTableView;
+    
+}
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    NSInteger count = 0 ;
+    if (XY_DEVICEIO_isPortrait(toInterfaceOrientation)) {
+        count = XY_M_SCREEN_H - 64 - headerViewHeight;
+    }else{
+        count = XY_M_SCREEN_W - 64 - headerViewHeight;
+    }
+    [self.contentTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(count));
+    }];
+}
+
+
+#pragma mark -- tableView Delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
+    return self.mData.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    XYSaleRecordsModel * model = [self.mData safeObjectAtIndex:section];
+    
+    return  [model.base isKindOfClass:[NSArray class]] ? (model.base.count ? model.base.count -1 : 0 ): 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    return cellHeight;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (tableView == self.leftTableView) {
+        XYTitleCell *TitleCell = [tableView dequeueReusableCellWithIdentifier:@"XYTitleCell"];
+//        if (self.mData.count) {
+//            XYProductListModel * model = [self.mData safeObjectAtIndex:indexPath.row];
+//            [TitleCell setModel:model IndexPath:indexPath callBack:nil];
+//        }
+        return TitleCell;
+    }else{
+        XYSalesRecordsTCell *ListCell = [tableView dequeueReusableCellWithIdentifier:@"XYSalesRecordsTCell"];
+        
+        if (self.mData.count) {
+            XYSaleRecordsModel * model = [self.mData safeObjectAtIndex:indexPath.section];
+            Base * base = [model.base safeObjectAtIndex:indexPath.row + 1];
+            [ListCell confirgModel:base anditemCellWidth:itemCellWidth andSpecialLoacation:4 indexPath:indexPath callBack:nil];
+            if (indexPath.row%2 == 0) {
+                [ListCell.contentView setBackgroundColor:COLOR_MAIN];
+            }else{
+                [ListCell.contentView setBackgroundColor:COLOR_GRAY_3];
+            }
+        }
+        
+        return ListCell;
+    }
+    
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+   
+        if (tableView == self.leftTableView) {
+            
+            XYTableViewHeaderFooterView * headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"XYTableViewHeaderFooterView"];
+            [headerView confirgDataArr:@[@"果品"] andBackGroundColor:COLOR_MAIN andItemWidth:leftWidth];
+            return headerView;
+            
+        }else{
+            
+            XYSalesRecordHeadeHFView * headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"XYSalesRecordHeadeHFView"];
+            HeaderViewModel * model = [_headerViewArr safeObjectAtIndex:section];
+            [headerView confirgModel:model anditemCellWidth:itemCellWidth andSpecialLoacation:0 indexPath:nil callBack:nil];
+            if (section%2 == 0) {
+                [headerView.contentView setBackgroundColor:COLOR_GRAY_3];
+            }else{
+                [headerView.contentView setBackgroundColor:COLOR_WHITE];
+            }
+            
+            [headerView.contentView setBackgroundColor:COLOR_BLUE];
+            return headerView;
+        }
+        
+    
+    return nil;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+  
+    return cellHeight;
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.1f;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.mData.count && tableView == self.leftTableView) {
+        XYProductListModel * x = [self.mData safeObjectAtIndex:indexPath.row];
+        [self jumpBuyersVC:x];
+    }
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView == self.contentTableView) {
+        //
+    }else{
+        
+        CGPoint contentOffset = CGPointMake(scrollView.contentOffset.x, 0);
+        self.scrollView.contentOffset = scrollView.contentOffset;
+        self.scrollView_top.contentOffset    = contentOffset;
+    }
+    
+    
+ 
+    
+}
+#pragma makr -- tool
+- (void)jumpBuyersVC:(XYProductListModel *)model{
+    XYBuyersViewController * vc = [[XYBuyersViewController alloc] init];
+    vc.dataModel = model;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)confirgDataArr:(NSArray *)dataArr andBackGroundColor:(UIColor *)color andItemWidth:(CGFloat)itemWidth superView:(UIView *)contentView{
+    [contentView setBackgroundColor:color];
+ 
+    UIView * view = [[UIView alloc]init];
+    [contentView addSubview:view];
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.top.equalTo(contentView.mas_top);
+        make.left.equalTo(contentView.mas_left);
+        make.bottom.equalTo(contentView.mas_bottom);
+        make.right.equalTo(contentView.mas_right);
+        make.height.equalTo(@(headerViewHeight));
+        make.width.equalTo(@(allWidth));
+    }];
+     
+    UIView * currentView;
+    for (NSInteger i = 0; i < dataArr.count; i ++) {
+        UILabel * label = [[UILabel alloc]init];
+        [view addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.equalTo(view);
+            make.width.mas_equalTo(itemWidth);
+            if (currentView) {
+                
+                make.left.equalTo(currentView.mas_right).offset(0);
+            }else{
+                
+                make.left.equalTo(view).offset(0);
+            }
+        }];
+        label.tag = i + 1;
+        [label setText:[dataArr safeObjectAtIndex:i]];
+        [label setTextColor:COLOR_GRAY_1];
+        [label setBackgroundColor:color];
+        [label setFont:XY_S_FONT(13.f)];
+        label.textAlignment = NSTextAlignmentCenter;
+        currentView = label;
+    }
+
+}
+@end

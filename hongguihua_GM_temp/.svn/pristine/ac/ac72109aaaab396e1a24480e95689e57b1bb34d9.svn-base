@@ -1,0 +1,197 @@
+//
+//  XYPositiveViewController.m
+//  XYFrameWork
+//
+//  Created by 中企互联 on 16/6/8.
+//  Copyright © 2016年 xiaoyao. All rights reserved.
+//
+
+#import "XYPositiveViewController.h"
+
+#import "XYTextFieldDetailCell.h"
+#import "XYTextFieldCell.h"
+#import "XYSubmitCell.h"
+
+@interface XYPositiveViewController ()
+
+@property (nonatomic,strong) NSArray * titleArr;
+@property (nonatomic,strong) NSArray * placeHolderArr;
+@property (nonatomic,strong) NSMutableArray * dataArr;
+@property (nonatomic,strong) NSArray * notesArr;
+
+@end
+
+@implementation XYPositiveViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)initNavigationBar {
+    [super initNavigationBar];
+    self.title = @"转正";
+    self.titleArr = @[@"入职日期",@"试用期工作总结",@"对公司的意见建议"];
+    self.placeHolderArr = @[@"请输入入职日期（必填）",@"请输入总结50字内（必填）",@"请输入意见与建议50字内（必填）"];
+    self.notesArr = @[@"请输入入职日期",@"请输入试用期工作总结",@"对公司的意见建议"];
+}
+
+- (void)initData {
+    [super initData];
+    self.dataArr = [NSMutableArray arrayWithArray:@[@"",@"",@""]];
+}
+- (void)initTableView {
+    [super initTableView];
+    [self initTableViewWithDelegate:self dataSource:self frame:self.view.bounds];
+    [self.mTableView registerNib:@"XYTextFieldDetailCell"];
+    [self.mTableView registerNib:@"XYTextFieldCell"];
+    [self.mTableView registerNib:@"XYSubmitCell"];
+    [self.mTableView.tableFooterView setBackgroundColor:[UIColor clearColor]];
+}
+
+#pragma mark -- tableView Delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 3 + 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return H_TABLECELLDEFAULTHEIGHT;
+    }
+    if (indexPath.section == 3) {
+        return 50.f;
+    }
+    return 80.f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == 2) {
+        return 20.f;
+    }
+    return 0.1f;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.1f;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    XYTextFieldCell *cell_tf = [tableView dequeueReusableCellWithIdentifier:@"XYTextFieldCell"];
+    XYTextFieldDetailCell *cell_tfd = [tableView dequeueReusableCellWithIdentifier:@"XYTextFieldDetailCell"];
+    XYSubmitCell *SubmitCell = [tableView dequeueReusableCellWithIdentifier:@"XYSubmitCell"];
+    
+    XYWeakSelf
+    if (self.dataArr.count) {
+        [cell_tf setModel:[self.dataArr safeObjectAtIndex:indexPath.section] IndexPath:indexPath callBack:^(NSString* x, NSIndexPath * indexPath) {
+            [weakSelf.dataArr replaceObjectAtIndex:indexPath.section withObject:x];
+        }];
+        
+        [cell_tfd setModel:[self.dataArr safeObjectAtIndex:indexPath.section] IndexPath:indexPath callBack:^(NSString* x, NSIndexPath * indexPath) {
+            [weakSelf.dataArr replaceObjectAtIndex:indexPath.section withObject:x];
+        }];
+        
+    }
+    if (self.titleArr.count && self.placeHolderArr.count) {
+        [cell_tf.leftLabel setText:[self.titleArr safeObjectAtIndex:indexPath.section]];
+        [cell_tf.rightTextField setPlaceholder:[self.placeHolderArr safeObjectAtIndex:indexPath.section]];
+        [cell_tfd.leftLabel setText:[self.titleArr safeObjectAtIndex:indexPath.section]];
+        [cell_tfd.rightLabel setText:[self.placeHolderArr safeObjectAtIndex:indexPath.section]];
+    }
+    
+    switch (indexPath.section) {
+        case 0:
+        {
+            [cell_tf showtopline:NO bottomline:YES jiantou:YES];
+            return cell_tf;
+        }
+            break;
+        case 1:
+        case 2:
+        {
+            [cell_tfd showtopline:NO bottomline:YES];
+            return cell_tfd;
+        }
+            break;
+        default:
+        {
+            [SubmitCell setTitle:@"提交" titleColor:COLOR_WHITE backColor:COLOR_BLUE space:50.f enable:YES];
+            XYWeakSelf
+            SubmitCell.clickCellBtnBlock = ^(UIButton * btn) {
+                 [weakSelf submit];
+            };
+            
+            return SubmitCell;
+        }
+            break;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    XYWeakSelf
+    if (indexPath.section == 0) {
+        [self.view endEditing:YES];
+        [XYPickerView createPickerViewOnView:SELFVIEW andTitle:@"请选择入职日期" andIndexPath:indexPath andDataArr:nil type:PickerTypeDate XYZBlock:^(NSString * x, NSArray * idsArr, NSIndexPath * indexPath) {
+            [weakSelf.dataArr replaceObjectAtIndex:indexPath.section withObject:x];
+            [weakSelf.mTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }];
+        
+        
+    }
+    
+}
+
+#pragma mark -- tool
+- (void)submit {
+    if (self.dataArr.count) {
+        NSInteger i = 0;
+        for (NSString * str in self.dataArr) {
+            if (isNONE(str)) {
+                [DialogUtil showDlgAlert:[self.notesArr safeObjectAtIndex:i]];
+                return;
+            }
+            i ++;
+        }
+        if (i == 3) {
+            [self upload];
+        }
+    }
+    
+}
+- (void)upload {
+    NSString * entrytime = [self.dataArr safeObjectAtIndex:0];
+    NSString *content = [self.dataArr safeObjectAtIndex:1];
+    NSString *opinion = [self.dataArr safeObjectAtIndex:2];
+    NSDictionary * dic = @{@"token":m_token,
+                           @"entrytime":entrytime,
+                           @"content":content,
+                           @"opinion":opinion,};
+    XYWeakSelf
+    [self xy_postWithValues:dic ModelType:nil Path:i_positive hud:nil Success:^(__kindof YTKBaseRequest *request, id model) {
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    } failure:^(NSString *msg, id model) {
+        
+    }];
+
+} 
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

@@ -1,0 +1,79 @@
+//
+//  XYCheckListDetailModel.h
+//  XYFrameWork
+//
+//  Created by 中企互联 on 16/6/17.
+//  Copyright © 2016年 xiaoyao. All rights reserved.
+//
+
+#import "XYBaseModel.h"
+
+
+@interface XYReceiversDetailModel : XYBaseModel
+/**
+ *
+ id        列表id
+ grade     水果等级
+ addtime   发货时间
+ 
+ name     名称
+ spec      规格
+ unit      数量
+ price      价格
+ photos    图片
+ cars      车次
+ carnumber 车牌号
+ */
+@property (nonatomic,copy) NSString <Optional>* xyid;
+//@property (nonatomic,copy) NSString <Optional>* reasons;//发货
+@property (nonatomic,copy) NSString <Optional>* grade;
+@property (nonatomic,copy) NSString <Optional>* addtime;
+@property (nonatomic,copy) NSString <Optional>* name;
+@property (nonatomic,copy) NSString <Optional>* spec;
+@property (nonatomic,copy) NSString <Optional>* unit;
+@property (nonatomic,copy) NSString <Optional>* price;
+@property (nonatomic,copy) NSString <Optional>* photos;
+@property (nonatomic,copy) NSString <Optional>* cars;
+@property (nonatomic,copy) NSString <Optional>* carnumber;
+@end
+
+@interface XYCheckListDetailModel : XYBaseModel
+/**
+ *  
+ id        商品id
+ reasons   事由
+ grade     采购类型
+ arrivetime  交付时间
+ name      名称
+ spek       规格
+ number    数量
+ unit       单位
+ price       价格
+ photos      图片
+ */
+@property (nonatomic,copy) NSString <Optional>* xyid;
+@property (nonatomic,copy) NSString <Optional>* reasons;
+@property (nonatomic,copy) NSString <Optional>* grade;
+@property (nonatomic,copy) NSString <Optional>* arrivetime;
+
+
+/**
+ *  预计发往口岸
+ */
+@property (nonatomic,strong) NSString <Optional>* estimatedArrivalPort;
+/**
+ *  预计到货日期
+ */
+@property (nonatomic,strong) NSString <Optional>* estimatedArrivalDate;
+@property (nonatomic,copy) NSString <Optional>* name;
+@property (nonatomic,copy) NSString <Optional>* spek;
+@property (nonatomic,copy) NSString <Optional>* number;
+@property (nonatomic,copy) NSString <Optional>* unit; 
+@property (nonatomic,copy) NSString <Optional>* price;
+@property (nonatomic,copy) NSString <Optional>* photos;
+@property (nonatomic,strong) NSMutableArray <Optional>* photosArr;
+
+
+
+
+@end

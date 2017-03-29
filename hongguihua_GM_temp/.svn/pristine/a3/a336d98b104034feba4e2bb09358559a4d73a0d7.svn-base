@@ -1,0 +1,30 @@
+//
+//  XYTitleCell.m
+//  XYFrameWork
+//
+//  Created by 中企互联 on 16/6/8.
+//  Copyright © 2016年 xiaoyao. All rights reserved.
+//
+
+#import "XYTitleCell.h"
+#import "XYProductListModel.h"
+@implementation XYTitleCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self.titleLabel setText:@"加载中..."];
+}
+- (void)setModel:(id)model IndexPath:(NSIndexPath *)indexPath callBack:(void (^)(id, id))block {
+    [super setModel:model IndexPath:indexPath callBack:block];
+    self.block = block;
+    if ([model isKindOfClass:[XYProductListModel class]]) {
+        XYProductListModel * dataModel = model;
+        [self.titleLabel setText:dataModel.name];
+    }
+    if ([model isKindOfClass:[XYManagementModel class]]) {
+        XYManagementModel * dataModel = model;
+        [self.titleLabel setText:dataModel.name];
+    }
+}
+
+@end

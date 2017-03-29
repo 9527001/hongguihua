@@ -1,0 +1,53 @@
+platform :ios, '7.0'
+
+target 'XYFrameWork' do
+
+
+pod 'Masonry'
+pod 'SDWebImage'
+pod 'BlocksKit'
+pod 'MyLayout'
+pod 'XAspect'
+pod 'IQKeyboardManager'
+pod 'GCDObjC'
+pod 'ReactiveCocoa', '~> 2.5'
+pod 'TMCache'
+pod 'iOS-Categories'
+pod 'JSONModel'
+pod 'FMDB'
+pod 'YTKNetwork'
+pod 'MBProgressHUD'
+# 日期选择控制器
+pod 'RMDateSelectionViewController'
+pod 'UMengAnalytics'
+pod 'UMengSocialCOM'
+# 控制器切换
+pod 'HMSegmentedControl'
+# label富文本
+pod "Typeset"
+
+
+# Cell高度自适应
+# pod 'WHC_AutoLayoutKit'
+# 轮播图
+pod 'SDCycleScrollView'
+pod 'MJRefresh'
+# pod 'RDVTabBarController'
+# 动效
+pod 'pop'
+# 数字小红点
+pod 'RKNotificationHub'
+
+# 照片选择器
+pod 'DACircularProgress'
+
+
+pod 'tingyunApp'
+
+
+#上线时要移除
+#pod 'Pgyer'
+#pod 'PgyUpdate'
+
+
+end

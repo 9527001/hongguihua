@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="XYToolBarView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RuV-JP-GkS">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="tz3-ui-osy"/>
+                    </constraints>
+                </view>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Efi-DF-jGW">
+                    <rect key="frame" x="0.0" y="0.0" width="260" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oeH-hb-7iZ">
+                    <rect key="frame" x="260" y="0.0" width="60" height="30"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="3B9-IX-TJ2"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="确定">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="clickToolBarBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="AFj-wX-hfa"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Efi-DF-jGW" secondAttribute="bottom" id="6D5-M3-lHd"/>
+                <constraint firstAttribute="trailing" secondItem="oeH-hb-7iZ" secondAttribute="trailing" id="6RX-Fg-cEL"/>
+                <constraint firstItem="RuV-JP-GkS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="IUy-TJ-5fg"/>
+                <constraint firstItem="oeH-hb-7iZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="OJb-nd-MW3"/>
+                <constraint firstAttribute="bottom" secondItem="oeH-hb-7iZ" secondAttribute="bottom" id="Q0K-l1-tcl"/>
+                <constraint firstItem="oeH-hb-7iZ" firstAttribute="leading" secondItem="Efi-DF-jGW" secondAttribute="trailing" id="lNW-Jd-Q2c"/>
+                <constraint firstItem="Efi-DF-jGW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="mKH-j0-qoP"/>
+                <constraint firstAttribute="trailing" secondItem="RuV-JP-GkS" secondAttribute="trailing" id="na5-BC-Sme"/>
+                <constraint firstItem="RuV-JP-GkS" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="tLy-fz-vbr"/>
+                <constraint firstItem="Efi-DF-jGW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="uEp-3I-2PX"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="rightBtn" destination="oeH-hb-7iZ" id="Lf7-38-6e3"/>
+                <outlet property="textFiled" destination="Efi-DF-jGW" id="hxg-8b-jpY"/>
+            </connections>
+            <point key="canvasLocation" x="199" y="235"/>
+        </view>
+    </objects>
+</document>

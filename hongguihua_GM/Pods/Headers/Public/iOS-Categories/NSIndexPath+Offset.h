@@ -1,0 +1,1 @@
+../../../iOS-Categories/Categories/Foundation/NSIndexPath/NSIndexPath+Offset.h

@@ -1,0 +1,70 @@
+//
+//  XYRDModel.h
+//  XYFrameWork
+//
+//  Created by 中企互联 on 16/8/26.
+//  Copyright © 2016年 xiaoyao. All rights reserved.
+//
+
+#import "XYBaseModel.h"
+
+@interface XYRDDetailModel : XYBaseModel
+
+/**
+ *
+ id  消息列表id
+ status  显示类型1: 未读；2：已读;
+ addtime  发货时间
+ cars      车次
+ name     果品名称
+ placeofreceipt 发货地
+ sendtoplace   发往地
+ sendstatus    收货状态1：在途；2：已收货；
+ */
+@property (nonatomic,strong) NSString <Optional> * xyid;
+@property (nonatomic,strong) NSString <Optional> * status;
+@property (nonatomic,strong) NSString <Optional> * addtime;
+@property (nonatomic,strong) NSString <Optional> * cars;
+@property (nonatomic,strong) NSString <Optional> * name;
+@property (nonatomic,strong) NSString <Optional> * placeofreceipt;
+@property (nonatomic,strong) NSString <Optional> * sendtoplace;
+@property (nonatomic,strong) NSString <Optional> * sendstatus;
+
+/**
+ *  
+ id    消息列表id
+ status 显示类型1: 未读；2：已读;
+ addtime  发货时间
+ cars      车次
+ name      果品名称
+ placeofreceipt 发货地
+ sendtoplace   收货地
+ sendstatus   收货状态1：在途；2：已收货；
+ getgoodstime 收货时间
+ username 收货人
+ senduser  发货人
+ */
+
+@property (nonatomic,strong) NSString <Optional> * getgoodstime;
+@property (nonatomic,strong) NSString <Optional> * username;
+@property (nonatomic,strong) NSString <Optional> * senduser;
+
+
+@end
+
+
+@interface XYRDModel : XYBaseModel
+
+/**
+ *
+ id  消息列表id
+ status  显示类型1: 未读；2：已读;
+ addtime  发货时间
+ */
+@property (nonatomic,strong) NSString <Optional> * xyid;
+@property (nonatomic,strong) NSString <Optional> * status;
+@property (nonatomic,strong) NSString <Optional> * addtime;
+
+@property (nonatomic,strong) NSString <Optional > *isClick;//点击 yes
+
+@end

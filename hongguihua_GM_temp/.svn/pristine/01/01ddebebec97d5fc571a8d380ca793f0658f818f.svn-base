@@ -1,0 +1,141 @@
+PODS:
+  - AFDownloadRequestOperation (2.0.1):
+    - AFNetworking (~> 2.0)
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - BlocksKit (2.2.5):
+    - BlocksKit/All (= 2.2.5)
+  - BlocksKit/All (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+    - BlocksKit/MessageUI
+    - BlocksKit/UIKit
+  - BlocksKit/Core (2.2.5)
+  - BlocksKit/DynamicDelegate (2.2.5)
+  - BlocksKit/MessageUI (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - BlocksKit/UIKit (2.2.5):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - DACircularProgress (2.3.1)
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - GCDObjC (0.2.0)
+  - HMSegmentedControl (1.5.2)
+  - iOS-Categories (1.0.2)
+  - IQKeyboardManager (3.3.7)
+  - JSONModel (1.2.0)
+  - Masonry (0.6.4)
+  - MBProgressHUD (0.9.2)
+  - MJRefresh (3.1.0)
+  - MyLayout (1.1.6)
+  - pop (1.0.9)
+  - ReactiveCocoa (2.5):
+    - ReactiveCocoa/UI (= 2.5)
+  - ReactiveCocoa/Core (2.5):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.5)
+  - ReactiveCocoa/UI (2.5):
+    - ReactiveCocoa/Core
+  - RKNotificationHub (2.0.1)
+  - RMDateSelectionViewController (1.4.3)
+  - SDCycleScrollView (1.64):
+    - SDWebImage (~> 3.7)
+  - SDWebImage (3.7.6):
+    - SDWebImage/Core (= 3.7.6)
+  - SDWebImage/Core (3.7.6)
+  - tingyunApp (2.4.0)
+  - TMCache (2.1.0)
+  - Typeset (3.3.0)
+  - UMengAnalytics (3.6.6)
+  - UMengSocialCOM (5.1.0)
+  - XAspect (1.0.5):
+    - XAspect/Core (= 1.0.5)
+    - XAspect/Macros (= 1.0.5)
+  - XAspect/Core (1.0.5):
+    - XAspect/Macros
+  - XAspect/Macros (1.0.5)
+  - YTKNetwork (1.0.0):
+    - AFDownloadRequestOperation (~> 2.0)
+    - AFNetworking (~> 2.0)
+
+DEPENDENCIES:
+  - BlocksKit
+  - DACircularProgress
+  - FMDB
+  - GCDObjC
+  - HMSegmentedControl
+  - iOS-Categories
+  - IQKeyboardManager
+  - JSONModel
+  - Masonry
+  - MBProgressHUD
+  - MJRefresh
+  - MyLayout
+  - pop
+  - ReactiveCocoa (~> 2.5)
+  - RKNotificationHub
+  - RMDateSelectionViewController
+  - SDCycleScrollView
+  - SDWebImage
+  - tingyunApp
+  - TMCache
+  - Typeset
+  - UMengAnalytics
+  - UMengSocialCOM
+  - XAspect
+  - YTKNetwork
+
+SPEC CHECKSUMS:
+  AFDownloadRequestOperation: 748a1643423e1ddb23f2178f778087d4f0ae8ac7
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
+  DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  GCDObjC: adcd9941029e3628de539347d3a6777470a65998
+  HMSegmentedControl: 83b9686022d2176fb6457d2bdb61e5d6393fed7d
+  iOS-Categories: 5a1647ce5867ceb2fab0b66bde895d0b486a2ee5
+  IQKeyboardManager: 249c3946acf61345c18b038eb50863fe2793e3a8
+  JSONModel: 12523685c4b623553ccf844bbbf7007624317b2c
+  Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
+  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  MJRefresh: 743e6404967d1c2c688472ea3ecfde247d872db4
+  MyLayout: dbdca562d98703dfb4c12687182d2fe0a65ea11c
+  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
+  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
+  RKNotificationHub: d80905a948c79c11673345f807133a0bfd17e320
+  RMDateSelectionViewController: 5c0e7a210077fe1b23aaf2b2b305aac3356396f0
+  SDCycleScrollView: 806fedb9342ab03b58b84442f985517b42c7cbb7
+  SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9
+  tingyunApp: 8453cf5cbbd546903c11b03d9e7fb6883372ccde
+  TMCache: 95ebcc9b3c7e90fb5fd8fc3036cba3aa781c9bed
+  Typeset: 19896965b00d0601fa2762f6c2c4d17a70b81755
+  UMengAnalytics: 4bf831415146b9c57cb10be65fbd43462ef8cf65
+  UMengSocialCOM: 8fa4732b03757161aaa8aab97be7d980adb9ccdb
+  XAspect: db50bf487f92dbb8557a7a5365556966c8493af8
+  YTKNetwork: 28ef7a3c119f61e737a76abbe74ff2fe1afec913
+
+PODFILE CHECKSUM: 8359ff1cdea554cb4fd083dd8c03cca1c9277df0
+
+COCOAPODS: 1.0.1

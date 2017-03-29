@@ -1,0 +1,1 @@
+../../../iOS-Categories/Categories/UIKit/UIApplication/UIApplication+Permissions.h

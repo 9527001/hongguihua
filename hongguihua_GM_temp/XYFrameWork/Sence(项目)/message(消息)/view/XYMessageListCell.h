@@ -1,0 +1,14 @@
+//
+//  XYMessageListCell.h
+//  XYFrameWork
+//
+//  Created by 中企互联 on 16/6/7.
+//  Copyright © 2016年 xiaoyao. All rights reserved.
+//
+
+#import "XYTableViewCell.h"
+
+
+@interface XYMessageListCell : XYTableViewCell
+
+@end

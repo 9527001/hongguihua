@@ -1,0 +1,1 @@
+../../../iOS-Categories/Categories/Foundation/NSString/NSString+XML.h

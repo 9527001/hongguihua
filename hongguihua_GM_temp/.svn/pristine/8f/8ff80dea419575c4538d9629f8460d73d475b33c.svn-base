@@ -1,0 +1,259 @@
+//
+//  XYPickerView.m
+//  XYFrameWork
+//
+//  Created by 中企互联 on 16/6/12.
+//  Copyright © 2016年 xiaoyao. All rights reserved.
+//
+
+#define openAndQuitTime 0.3
+#define pickerAndTitleHeight (XY_M_SCREEN_MAX - H_NAVIGATIONBAR)/3
+#define normalConstant 0
+#import "XYPickerView.h"
+
+#import "XYPickerViewModel.h"
+
+typedef void(^XYPickerViewBlock)(id x,id y);
+typedef void(^XYPickerViewXYZBlock)(id x,id y,id z);
+
+@interface XYPickerView ()<UIPickerViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIPickerView *mPickerView;
+@property (weak, nonatomic) IBOutlet UIDatePicker *mDatePickerView;
+
+@property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstant;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *leftBtn;
+@property (weak, nonatomic) IBOutlet UIButton *rightBtn;
+
+@property (nonatomic,copy) XYPickerViewBlock pickerViewBlock;
+@property (nonatomic,copy) XYPickerViewXYZBlock pickerViewXYZBlock;
+@property (nonatomic,assign) PickerType type;
+@property (nonatomic,copy) NSString * finalValue;//
+@property (nonatomic,strong) NSMutableArray * finalValueArr;
+@property (nonatomic,strong) NSMutableArray * finalValueIDArr;
+@property (nonatomic,strong) NSIndexPath * indexPath;
+
+@end
+
+@implementation XYPickerView
+
++ (void)createPickerViewOnView:(UIView *)view andTitle:(NSString *)title andIndexPath:(NSIndexPath *)indexPath andDataArr:(NSArray *)arr type:(PickerType )type XYZBlock:(void(^)(id x,id y,id z))block {
+    
+    XYPickerView * pickerView = [XYPickerView xy_xib];
+    [view addSubview:pickerView];
+    [pickerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(view);
+    }];
+    [pickerView.titleLabel setText:title];
+    pickerView.dataArr = [NSMutableArray arrayWithArray:arr];
+    pickerView.type = type;
+    pickerView.indexPath = indexPath;
+    switch (type) {
+        case PickerTypeDefault:
+        {
+            [pickerView.mDatePickerView setHidden:YES];
+        }
+            break;
+        case PickerTypeDate:
+        {
+            [pickerView.mDatePickerView setBackgroundColor:COLOR_MAIN];
+            [pickerView.mDatePickerView setHidden:NO];
+            
+        }
+            break;
+        default:
+            break;
+    }
+    pickerView.pickerViewXYZBlock = block;
+
+}
++ (void)createPickerViewOnView:(UIView *)view andTitle:(NSString *)title andIndexPath:(NSIndexPath *)indexPath andDataArr:(NSArray *)arr type:(PickerType )type callBack:(void(^)(id x,id y))block{
+    XYPickerView * pickerView = [XYPickerView xy_xib];
+    [view addSubview:pickerView];
+    [pickerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(view);
+    }];
+    [pickerView.titleLabel setText:title];
+    pickerView.dataArr = [NSMutableArray arrayWithArray:arr];
+    pickerView.type = type;
+    pickerView.indexPath = indexPath;
+    switch (type) {
+        case PickerTypeDefault:
+        {
+            [pickerView.mDatePickerView setHidden:YES];
+        }
+            break;
+        case PickerTypeDate:
+        {
+            [pickerView.mDatePickerView setBackgroundColor:COLOR_WHITE];
+            [pickerView.mDatePickerView setHidden:NO];
+            
+            
+        }
+            break;
+        default:
+            break;
+    }
+    pickerView.pickerViewBlock = block;
+}
+
+
+
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    XYWeakSelf
+    [self.bottomView bk_whenTapped:^{
+        [weakSelf removeSelfFromSuperview];
+    }];
+    [self.leftBtn bk_whenTapped:^{
+        [weakSelf removeSelfFromSuperview];
+    }];
+    
+    
+    
+    [self.mDatePickerView setDate:[NSDate date]];
+    [self.rightBtn bk_whenTapped:^{
+        switch (self.type) {
+            case PickerTypeDefault:
+            {
+                if (self.pickerViewBlock) {
+                    [self getFinalValue];
+                    self.pickerViewBlock (self.finalValue,_indexPath);
+                }
+                if (self.pickerViewXYZBlock) {
+                    [self getFinalValue];
+                    self.pickerViewXYZBlock(self.finalValue,self.finalValueIDArr,_indexPath);
+                }
+            }
+                break;
+            case PickerTypeDate:
+            {
+                
+                NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"]; //大写的 H为24小时制，小写h为12小时制
+                self.finalValue = [dateFormatter stringFromDate:self.mDatePickerView.date];
+           
+                    if (self.pickerViewBlock) {
+                        self.pickerViewBlock (self.finalValue,_indexPath);
+                    }
+                    if (self.pickerViewXYZBlock) {
+                        self.pickerViewXYZBlock(self.finalValue,nil,_indexPath);
+                    }
+            
+                
+            }
+                break;
+            default:
+                break;
+        }
+        
+        [weakSelf removeSelfFromSuperview];
+    }];
+    [self show];
+
+}
+
+
+
+#pragma mark -- pickerView
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    if ([[self.dataArr safeObjectAtIndex:0] isKindOfClass:[NSArray class]]) {
+        return self.dataArr.count;
+    }
+    return 1;
+}
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    NSArray * arr = [self.dataArr safeObjectAtIndex:component];
+    return arr.count;
+}
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+    id obj = [self.dataArr safeObjectAtIndex:component];
+    if ([obj isKindOfClass:[NSArray class]]) {
+        NSArray * arr = obj;
+        id objSec = [arr safeObjectAtIndex:row];
+        if ([objSec isKindOfClass:[XYPickerViewModel class]]) {
+            XYPickerViewModel * model = objSec;
+            return model.name;
+        }else{
+            return objSec;
+        }
+    }
+    return nil;
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+  
+    id data = [self.dataArr safeObjectAtIndex:component];
+    if ([data isKindOfClass:[NSArray class]]) {
+        id obj = [data safeObjectAtIndex:row];
+        if ([obj isKindOfClass:[XYPickerViewModel class]]) {
+            XYPickerViewModel * model = obj;
+            [self.finalValueArr replaceObjectAtIndex:component withObject:model.name];
+            [self.finalValueIDArr replaceObjectAtIndex:component withObject:model.xyid];
+        }else{
+            [self.finalValueArr replaceObjectAtIndex:component withObject:[data safeObjectAtIndex:row]];
+        }
+        
+    }
+    
+}
+
+#pragma mark -- tool
+- (void)show {
+    
+    [self.bottomView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0]];
+    [UIView animateWithDuration:openAndQuitTime animations:^{
+        [self.bottomView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
+        self.bottomConstant.constant = normal;
+        [self layoutIfNeeded];
+    }];
+}
+- (void)removeSelfFromSuperview {
+    XYWeakSelf
+    [UIView animateWithDuration:openAndQuitTime animations:^{
+        [self.bottomView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0]];
+        self.bottomConstant.constant = pickerAndTitleHeight;
+        [self layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [weakSelf removeFromSuperview];
+        }
+    }];
+}
+- (void)setDataArr:(NSMutableArray *)dataArr {
+    _dataArr = dataArr;
+    if (!self.finalValueIDArr) {
+        self.finalValueIDArr = [NSMutableArray array];
+    }
+    self.finalValueArr = [NSMutableArray array];
+    for (id data in self.dataArr) {
+        if ([data isKindOfClass:[NSArray class]]) {
+            id obj = [data safeObjectAtIndex:0];
+            if ([obj isKindOfClass:[XYPickerViewModel class]]) {
+                XYPickerViewModel * model = obj;
+                [self.finalValueArr addObject:model.name];
+                [self.finalValueIDArr addObject:model.xyid];
+            }else{
+               [self.finalValueArr addObject:obj];
+            }
+        }
+    }
+    
+    [self.mPickerView reloadAllComponents];
+    
+    
+}
+
+- (void)getFinalValue {
+    NSMutableString * str = [NSMutableString string];
+    for (id data in self.finalValueArr) {
+        if ([data isKindOfClass:[NSString class]]) {
+            [str appendFormat:@"%@",data];
+        }
+    }
+    self.finalValue = str;
+}
+@end

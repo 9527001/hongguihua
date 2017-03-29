@@ -1,0 +1,1 @@
+../../../iOS-Categories/Categories/UIKit/UINavigationController/UINavigationController+StackManager.h

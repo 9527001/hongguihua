@@ -1,0 +1,1 @@
+../../../iOS-Categories/Categories/Foundation/NSURLConnection/NSURLConnection+SelfSigned.h

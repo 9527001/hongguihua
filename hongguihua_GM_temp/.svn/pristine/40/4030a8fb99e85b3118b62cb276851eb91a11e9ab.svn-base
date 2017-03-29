@@ -1,0 +1,41 @@
+//
+//  Aspect-appearance.m
+//  mcapp
+//
+//  Created by zhuchao on 14/12/16.
+//  Copyright (c) 2014年 zhuchao. All rights reserved.
+//
+
+#import "AppDelegate.h"
+
+#import <XAspect/XAspect.h>
+
+//#import <PgySDK/PgyManager.h>
+//#import <PgyUpdate/PgyUpdateManager.h>
+#define PGYAppID @"7a6b4306de8b14b1559e40625449f3b7"
+#define AppId    @"com.hongguihua.zqzx"
+
+#define AtAspect  PGYConfig
+#define AtAspectOfClass AppDelegate
+@classPatchField(AppDelegate)
+AspectPatch(-, BOOL, application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions)
+{
+    
+    //启动基本SDK
+//    [[PgyManager sharedPgyManager] startManagerWithAppId:PGYAppID];
+    
+#if DEBUG
+     //启动更新检查SDK
+//    [[PgyUpdateManager sharedPgyManager] startManagerWithAppId:PGYAppID];
+//    [[PgyUpdateManager sharedPgyManager] checkUpdate];
+#else
+ 
+#endif
+    
+    return XAMessageForward(application:application didFinishLaunchingWithOptions:launchOptions);
+}
+
+
+@end
+#undef AtAspectOfClass
+#undef AtAspect

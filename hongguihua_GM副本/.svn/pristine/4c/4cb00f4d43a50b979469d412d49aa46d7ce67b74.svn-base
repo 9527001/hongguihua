@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="U6b-Vx-4bR" customClass="XYBuyersCollectionReusableView">
+            <rect key="frame" x="0.0" y="0.0" width="400" height="105"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timage" translatesAutoresizingMaskIntoConstraints="NO" id="9Kg-SN-TY2">
+                    <rect key="frame" x="10" y="10" width="85" height="85"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="9Kg-SN-TY2" secondAttribute="height" id="R0N-rY-JBc"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="188968958455=" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sa6-n1-oT6">
+                    <rect key="frame" x="105" y="52" width="105" height="43"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="0.40000000596046448" green="0.40000000596046448" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="孙悟空" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OwO-oG-o4O">
+                    <rect key="frame" x="105" y="10" width="42" height="43"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstItem="9Kg-SN-TY2" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="10" id="8fd-gS-2hv"/>
+                <constraint firstItem="OwO-oG-o4O" firstAttribute="leading" secondItem="9Kg-SN-TY2" secondAttribute="trailing" constant="10" id="AKN-KB-wH4"/>
+                <constraint firstItem="Sa6-n1-oT6" firstAttribute="height" secondItem="OwO-oG-o4O" secondAttribute="height" id="AKs-PG-g5t"/>
+                <constraint firstAttribute="height" secondItem="OwO-oG-o4O" secondAttribute="height" id="Cja-ee-cGu"/>
+                <constraint firstItem="9Kg-SN-TY2" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="10" id="F5r-KP-u1E"/>
+                <constraint firstItem="Sa6-n1-oT6" firstAttribute="bottom" secondItem="9Kg-SN-TY2" secondAttribute="bottom" id="To0-fR-pQs"/>
+                <constraint firstItem="Sa6-n1-oT6" firstAttribute="leading" secondItem="OwO-oG-o4O" secondAttribute="leading" id="Xy8-cF-n7y"/>
+                <constraint firstAttribute="bottom" secondItem="9Kg-SN-TY2" secondAttribute="bottom" constant="10" id="hrm-ti-Fmx"/>
+                <constraint firstItem="OwO-oG-o4O" firstAttribute="height" secondItem="9Kg-SN-TY2" secondAttribute="height" multiplier="1:2" id="qaV-uW-Y2m"/>
+                <constraint firstItem="OwO-oG-o4O" firstAttribute="top" secondItem="9Kg-SN-TY2" secondAttribute="top" id="u8n-IV-LoR"/>
+            </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="Cja-ee-cGu"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="iconImageView" destination="9Kg-SN-TY2" id="Ir2-Xh-xfI"/>
+                <outlet property="imageView" destination="9Kg-SN-TY2" id="aAo-Ys-WHf"/>
+                <outlet property="mainLabel" destination="OwO-oG-o4O" id="6tV-DC-fgn"/>
+                <outlet property="notesLabel" destination="Sa6-n1-oT6" id="AGf-iN-7P1"/>
+                <outlet property="subTitleLabel" destination="Sa6-n1-oT6" id="f0E-H8-oN6"/>
+                <outlet property="titleLabel" destination="OwO-oG-o4O" id="li3-ZR-RNc"/>
+            </connections>
+            <point key="canvasLocation" x="324" y="207.5"/>
+        </collectionReusableView>
+    </objects>
+    <resources>
+        <image name="timage" width="75" height="73"/>
+    </resources>
+</document>

@@ -1,0 +1,94 @@
+//
+//  Aspect-Window.m
+//  rssreader
+//
+//  Created by zhuchao on 15/2/14.
+//  Copyright (c) 2015年 zhuchao. All rights reserved.
+//
+
+#import "AppDelegate.h"
+#import <XAspect/XAspect.h>
+
+
+#import "XYLoginViewController.h"
+#import "XYNavigationController.h"
+
+@interface AppDelegate() <UITabBarControllerDelegate>
+@end
+
+#define AtAspect Window
+
+#define AtAspectOfClass AppDelegate
+@classPatchField(AppDelegate)
+
+AspectPatch(-, void,application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions) {
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+    [self handleNet:application didFinishLaunchingWithOptions:launchOptions];
+    
+    if([XYCenter  checkIsLogin]) {
+        XYTabBarController *c = [[XYTabBarController alloc] init];
+        c.delegate = self;
+        self.window.rootViewController = c;
+    }else{ 
+        XYLoginViewController * vc = [[XYLoginViewController alloc] init];
+        XYNavigationController * nav = [[XYNavigationController alloc] initWithRootViewController:vc];
+        self.window.rootViewController = nav;
+    }
+    [self.window makeKeyAndVisible];
+    
+    
+}
+
+- (void)handleNet:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    YTKNetworkConfig *config = [YTKNetworkConfig sharedInstance];
+    config.baseUrl = ServerURL;
+    
+    
+    [IQKeyboardManager sharedManager].enable = true;
+    
+    // 清空已过期图片
+    //    [[SDImageCache sharedImageCache] cleanDisk];
+    
+    [[$ rac_didNetworkChanges]
+     subscribeNext:^(NSNumber *status) {
+         AFNetworkReachabilityStatus networkStatus = [status intValue];
+         DLog(@"networkStatus ==8 %ld",(long)networkStatus);
+         switch (networkStatus) {
+             case AFNetworkReachabilityStatusUnknown:
+             case AFNetworkReachabilityStatusNotReachable:
+                 [XYCenter sharedInstance].isWifi = NO;
+                                  [[DialogUtil sharedInstance] showDlg:self.window textOnly:@"网络链接已断开"];
+                 break;
+             case AFNetworkReachabilityStatusReachableViaWWAN:
+                 [XYCenter sharedInstance].isWifi = NO;
+                 [[DialogUtil sharedInstance] showDlg:self.window textOnly:@"当前使用移动数据网络"];
+                 break;
+             case AFNetworkReachabilityStatusReachableViaWiFi:
+                 [XYCenter sharedInstance].isWifi = YES;
+                 break;
+         }
+     }];
+    
+    XAMessageForward(application:application didFinishLaunchingWithOptions:launchOptions);
+
+}
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    if([viewController isKindOfClass:NSClassFromString(@"XYNavigationController")]){
+        UINavigationController *vc = (UINavigationController *)viewController;
+        UIViewController *c = vc.topViewController;
+        if([c isKindOfClass:NSClassFromString(@"SXMineViewController")])
+        {
+            c.navigationController.navigationBar.hidden = YES;
+        }
+    }
+    
+}
+@end
+
+
+#undef AtAspectOfClass
+
+#undef AtAspect

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="bIC-0D-k1X" customClass="XYAddProductPhotoItem">
+            <rect key="frame" x="0.0" y="0.0" width="244" height="213"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="244" height="213"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timage" translatesAutoresizingMaskIntoConstraints="NO" id="DW2-Am-Z7n">
+                        <rect key="frame" x="10" y="10" width="224" height="193"/>
+                    </imageView>
+                    <label opaque="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="x" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1MX-zp-4aZ">
+                        <rect key="frame" x="219" y="0.0" width="25" height="25"/>
+                        <color key="backgroundColor" red="0.90588235855102539" green="0.078431375324726105" blue="0.10980392247438431" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="1MX-zp-4aZ" secondAttribute="height" id="jqU-VQ-Axc"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="25" id="jzK-aA-DOd"/>
+                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="40" id="rwg-de-lJH"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                        <size key="shadowOffset" width="0.0" height="0.0"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="DW2-Am-Z7n" secondAttribute="bottom" constant="10" id="8ZF-xF-p5r"/>
+                <constraint firstItem="1MX-zp-4aZ" firstAttribute="width" secondItem="bIC-0D-k1X" secondAttribute="width" multiplier="1:4" id="EVb-aQ-D6s"/>
+                <constraint firstItem="DW2-Am-Z7n" firstAttribute="top" secondItem="bIC-0D-k1X" secondAttribute="top" constant="10" id="GW5-7y-P5t"/>
+                <constraint firstAttribute="trailing" secondItem="1MX-zp-4aZ" secondAttribute="trailing" id="UJe-tz-cjW"/>
+                <constraint firstAttribute="trailing" secondItem="DW2-Am-Z7n" secondAttribute="trailing" constant="10" id="Yvv-gS-8cS"/>
+                <constraint firstItem="1MX-zp-4aZ" firstAttribute="top" secondItem="bIC-0D-k1X" secondAttribute="top" id="a4g-xg-Fhn"/>
+                <constraint firstItem="DW2-Am-Z7n" firstAttribute="leading" secondItem="bIC-0D-k1X" secondAttribute="leading" constant="10" id="hJY-dc-Hdw"/>
+            </constraints>
+            <size key="customSize" width="244" height="213"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="EVb-aQ-D6s"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="deleLabel" destination="1MX-zp-4aZ" id="g9h-st-0Xp"/>
+                <outlet property="imageView" destination="DW2-Am-Z7n" id="f9V-Gs-vAa"/>
+            </connections>
+            <point key="canvasLocation" x="26" y="357.5"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="timage" width="600" height="600"/>
+    </resources>
+</document>

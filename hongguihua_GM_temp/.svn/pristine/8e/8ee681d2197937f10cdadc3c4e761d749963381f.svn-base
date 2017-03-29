@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="u1I-I0-QZ4" customClass="XYBuyersItem">
+            <rect key="frame" x="0.0" y="0.0" width="188" height="166"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="188" height="166"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timage" translatesAutoresizingMaskIntoConstraints="NO" id="Krt-ow-nMV">
+                        <rect key="frame" x="0.0" y="0.0" width="188" height="166"/>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="Krt-ow-nMV" firstAttribute="leading" secondItem="u1I-I0-QZ4" secondAttribute="leading" id="Akq-Qf-wT0"/>
+                <constraint firstAttribute="bottom" secondItem="Krt-ow-nMV" secondAttribute="bottom" id="Cyn-Pw-Cug"/>
+                <constraint firstItem="Krt-ow-nMV" firstAttribute="top" secondItem="u1I-I0-QZ4" secondAttribute="top" id="fBb-ak-KW1"/>
+                <constraint firstAttribute="trailing" secondItem="Krt-ow-nMV" secondAttribute="trailing" id="l2X-Tn-KPS"/>
+            </constraints>
+            <size key="customSize" width="188" height="166"/>
+            <connections>
+                <outlet property="imageView" destination="Krt-ow-nMV" id="o9f-Ps-1yC"/>
+            </connections>
+            <point key="canvasLocation" x="198" y="370"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="timage" width="600" height="600"/>
+    </resources>
+</document>

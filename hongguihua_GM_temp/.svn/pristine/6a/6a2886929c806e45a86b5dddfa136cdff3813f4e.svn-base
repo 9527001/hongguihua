@@ -1,0 +1,252 @@
+//
+//  XYCheckListDetailViewController.m
+//  XYFrameWork
+//
+//  Created by 中企互联 on 16/6/17.
+//  Copyright © 2016年 xiaoyao. All rights reserved.
+//
+
+#import "XYCheckListDetailViewController.h"
+
+#import "XYTextFieldDetailCell.h"
+#import "XYTextFieldCell.h"
+#import "XYSubmitCell.h"
+#import "XYPhotosCell.h"
+#import "XYSubmitSelectorCell.h"
+
+#import "XYPickerViewModel.h"
+
+@interface XYCheckListDetailViewController ()
+
+@property (nonatomic,strong) NSArray * titleArr;
+@property (nonatomic,strong) NSArray * placeHolderArr;
+@property (nonatomic,strong) XYCheckListDetailModel * dataModel;
+
+@end
+
+@implementation XYCheckListDetailViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+- (void)initNavigationBar {
+    [super initNavigationBar];
+    self.title = @"审核详情";
+}
+
+- (void)initUI {
+    [super initUI];
+    self.titleArr = @[@[@"申请事由"],
+                      @[@"采购类型",@"交付日期",@"预计发往口岸",@"预计到货日期"],
+                      @[@"名称"],
+                      @[@"规格",@"重量",@"单位",@"价格"],
+                      @[@"图片",@""],
+                      @[@""],
+                      ];
+    self.placeHolderArr = @[@[@"请输入申请事由"],
+                            @[@"请选择类型",@"请选择选择交付日期"],
+                            @[@"请输入名称"],
+                            @[@"",@"",@"",@"",@""],
+                            @[@""],
+                            ];
+    self.dataModel = [[XYCheckListDetailModel alloc] init];
+    self.dataModel.photosArr = [NSMutableArray array];
+    
+}
+- (void)initData {
+    [super initData];
+}
+- (void)initNet {
+    [super initNet];
+    [self xy_postWithValues:@{MID:self.lModel.xyid} ModelType:[XYCheckListDetailModel class] Path:i_checkdetail hud:nil Success:^(__kindof YTKBaseRequest *request, id model) {
+        if ([model isKindOfClass:[XYCheckListDetailModel class]]) {
+            self.dataModel = model;
+            [self.mTableView reloadData];
+
+        }
+    } failure:^(NSString *msg, id model) {
+        
+    }];
+}
+- (void)initTableView {
+    [super initTableView];
+    [self initTableViewWithDelegate:self dataSource:self frame:self.view.bounds];
+    self.mTableView.showsVerticalScrollIndicator = NO;
+    [self.mTableView registerNib:@"XYTextFieldCell"];
+    [self.mTableView registerNib:@"XYSubmitCell"];
+    [self.mTableView registerNib:@"XYPhotosCell"];
+    [self.mTableView registerNib:@"XYSubmitSelectorCell"];
+    
+    [self.mTableView.tableFooterView setBackgroundColor:[UIColor clearColor]];
+}
+
+#pragma mark -- tableView Delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return self.titleArr.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    if (section == 4) {
+        if (self.dataModel.photos.length > 0) {
+            return 2;
+        }else{
+            return 0;
+        }
+            
+    }
+    return [[self.titleArr safeObjectAtIndex:section] count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.section == 5 ) {
+        if (![self.lModel.status isEqualToString:@"1"]) {
+            return 0;
+        }
+        return 60.f;
+    }
+    if (indexPath.section == 4 && indexPath.row == 1) {
+        return [XYPhotosCell cellHeight];
+    }
+    return H_TABLECELLDEFAULTHEIGHT;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == 1 ||section == 3||section == 4 || section == 5) {
+        return 20.f;
+    }
+    return 0.1f;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.1f;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    XYTextFieldCell *cell_tf = [tableView dequeueReusableCellWithIdentifier:@"XYTextFieldCell"];
+    XYSubmitSelectorCell *SubmitCell = [tableView dequeueReusableCellWithIdentifier:@"XYSubmitSelectorCell"];
+    XYPhotosCell *cell_photo = [tableView dequeueReusableCellWithIdentifier:@"XYPhotosCell"];
+    XYWeakSelf
+    if (self.titleArr.count&&self.placeHolderArr.count) {
+        [cell_tf.leftLabel setText:[[self.titleArr safeObjectAtIndex:indexPath.section] safeObjectAtIndex:indexPath.row]];
+        [cell_tf.rightTextField setPlaceholder:[[self.placeHolderArr safeObjectAtIndex:indexPath.section] safeObjectAtIndex:indexPath.row]];
+    }
+    switch (indexPath.section) {
+        case 0:
+        {
+            [cell_tf showtopline:NO bottomline:YES jiantou:NO];
+            [cell_tf setModel:self.dataModel.reasons IndexPath:indexPath callBack:nil];
+            return cell_tf;
+        }
+            break;
+        case 1:
+        {
+            [cell_tf showtopline:NO bottomline:YES jiantou:NO];
+            switch (indexPath.row) {
+                case 0:
+                {
+                    [cell_tf.rightTextField setText:self.dataModel.grade];
+                }
+                    break;
+                case 1:
+                {
+                    [cell_tf.rightTextField setText:self.dataModel.arrivetime];
+                }
+                    break;
+                case 2:
+                {
+                    [cell_tf.rightTextField setText:self.dataModel.estimatedArrivalPort];
+                }
+                    break;
+                case 3:
+                {
+                    [cell_tf.rightTextField setText:self.dataModel.estimatedArrivalDate];
+                }
+                    break;
+                default:
+                    break;
+            }
+            return cell_tf;
+        }
+            break;
+        case 2:
+        {
+            [cell_tf showtopline:YES bottomline:YES jiantou:NO];
+            [cell_tf.rightTextField setText:self.dataModel.name];
+            return cell_tf;
+        }
+            break;
+        case 3:
+        {
+            [cell_tf showtopline:NO bottomline:YES jiantou:NO];
+            if (self.dataModel) {
+                [cell_tf setModel:self.dataModel IndexPath:indexPath callBack:nil];
+            }
+            
+            return cell_tf;
+        }
+            break;
+        case 4:
+        {
+            if (indexPath.row == 0) {
+                [cell_tf showtopline:YES bottomline:YES jiantou:NO];
+                return cell_tf;
+            }else{
+                
+                if ([self.dataModel.photos isKindOfClass:[NSString class]]) {
+                    if (self.dataModel.photos.length > 0) {
+                        
+                        NSArray * arr = [self.dataModel.photos componentsSeparatedByString:@","];
+                        //                    [cell_photo setModel:arr IndexPath:indexPath callBack:^(NSMutableArray * arr, NSIndexPath *indexPath) {
+                        //
+                        //                    } deleteBlock:^(id x,  NSIndexPath *indexPath) {
+                        //                    }];
+                        //
+                        [cell_photo setModel:arr IndexPath:indexPath callBack:nil];
+                    }
+                    
+                }
+                return cell_photo;
+            }
+        }
+            break;
+        default:
+        {
+            [SubmitCell setTextLeft:@"拒绝" textRight:@"通过" BGCLeft:COLOR_GRAY_2 BGC:COLOR_BLUE space:20 indexPaht:indexPath callBlock:^(id x, id y) {
+                if ([x isKindOfClass:[NSString class]]) {
+                    [weakSelf submit:x];
+                }
+                
+            }];
+            
+            return SubmitCell;
+        }
+            break;
+    }
+}
+#pragma mark -- tool
+-(void)submit:(NSString *)status {
+    /**
+     *  
+     id	列表id	int	Y
+     token	用户唯一标示	String	Y
+     type	审核类型	Int 	y	1：审核通过;2:审核未通过
+     */
+    XYWeakSelf
+    [self xy_postWithValues:@{MID:self.lModel.xyid,MTOKEN:m_token,MTYPE:status} ModelType:nil Path:i_check hud:nil Success:^(__kindof YTKBaseRequest *request, id model) {
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    } failure:^(NSString *msg, id model) {
+        
+    }];
+}
+
+
+@end

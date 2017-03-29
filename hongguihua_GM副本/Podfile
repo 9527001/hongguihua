@@ -1,0 +1,63 @@
+platform :ios, '7.0'
+
+target 'XYFrameWork' do
+
+
+pod 'Masonry'
+pod 'SDWebImage'
+pod 'BlocksKit'
+pod 'MyLayout'
+pod 'XAspect'
+pod 'IQKeyboardManager'
+pod 'GCDObjC'
+pod 'ReactiveCocoa', '~> 2.5'
+pod 'TMCache'
+pod 'iOS-Categories'
+pod 'JSONModel'
+pod 'FMDB'
+pod 'YTKNetwork'
+pod 'MBProgressHUD'
+# 日期选择控制器
+pod 'RMDateSelectionViewController'
+
+# 控制器切换
+pod 'HMSegmentedControl'
+# label富文本
+pod "Typeset"
+
+
+# Cell高度自适应
+# pod 'WHC_AutoLayoutKit'
+# 轮播图
+pod 'SDCycleScrollView'
+pod 'MJRefresh'
+# pod 'RDVTabBarController'
+# 动效
+pod 'pop'
+# 数字小红点
+pod 'RKNotificationHub'
+
+# 照片选择器
+pod 'DACircularProgress'
+
+
+pod 'tingyunApp'
+
+
+#上线时要移除
+#pod 'Pgyer'
+#pod 'PgyUpdate'
+
+# 阿里hotfix
+# 以下两行必须写 似乎重定向链接库
+# 解释
+# source是指定pod的来源。如果不指定source，默认是使用CocoaPods官方的source。通常我们没有必要添加。
+source 'https://github.com/CocoaPods/Specs.git'
+source 'http://repo.baichuan-ios.taobao.com/baichuanSDK/AliBCSpecs.git'
+
+pod 'BCUserTrack'
+pod 'ZipArchive', '~> 1.4.0'
+pod 'wax', :git => 'https://github.com/alibaba/wax.git'
+
+
+end
